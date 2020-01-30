@@ -1,6 +1,7 @@
 module Pico
   SCREEN_WIDTH = 128
   SCREEN_HEIGHT = 128
+  SPRITE_SIZE = 8
 
   COLORS = [
     Raylib::Color.init(0, 0, 0, 255), # black
@@ -18,29 +19,48 @@ module Pico
     Raylib::Color.init(41, 173, 255, 255), # blue
     Raylib::Color.init(131, 118, 156, 255), # indigo
     Raylib::Color.init(255, 119, 168, 255), # pink
-    Raylib::Color.init(255, 204, 170, 255)  # peach
+    Raylib::Color.init(255, 204, 170, 255),  # peach
   ]
+
+  @@spritesheet = nil
 
   def cls(col = 0)
     Raylib::clear_background(COLORS[col])
   end
+
   module_function :cls
 
   def rectfill(x0, y0, x1, y1, col = 0)
     Raylib::draw_rectangle(x0, y0, x1, y1, COLORS[col])
   end
+
   module_function :rectfill
 
   def print(str, x, y, col = 0)
     Raylib::draw_text(str, x, y, 1, COLORS[col])
   end
+
   module_function :print
+
+  def spr(n, x, y, w = 1.0, h = 1.0, flip_x = false, flip_y = false)
+    s = SPRITE_SIZE
+    ss = SCREEN_WIDTH / SPRITE_SIZE
+    Raylib::draw_texture_rec(
+      @@spritesheet,
+      Raylib::Rectangle.init((n % ss) * s, (n / ss).to_i * s, s * w, s * h),
+      Raylib::Vector2.init(x, y),
+      Raylib::WHITE
+    )
+  end
+
+  module_function :spr
 
   def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
 
       target = Raylib::load_render_texture(SCREEN_WIDTH, SCREEN_HEIGHT)
+      @@spritesheet = Raylib::load_texture("resource/spritesheet.png")
 
       until Raylib::window_should_close
         # Update

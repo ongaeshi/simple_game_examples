@@ -13,7 +13,7 @@ class Scene
   end
 
   def draw
-		cls(1)
+    cls(1)
 
     (0...16).each do |i|
       (0...16).each do |j|
@@ -23,9 +23,16 @@ class Scene
       end
     end
 
+    s = 0
+    (0...16).each do |i|
+      (0...16).each do |j|
+        spr(s, j * 8, i * 8)
+        s += 1
+      end
+    end
+
     print("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 7)
   end
 end
 
 Pico::mainloop(Scene.new, "topview_shooter")
-
