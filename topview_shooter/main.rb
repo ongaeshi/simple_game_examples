@@ -12,8 +12,8 @@ class Scene
     @x = -80 if @x > 150
   end
 
-  def draw
-    Raylib::clear_background(Raylib::Color.init(194, 195, 199, 255))
+	def draw
+		cls(0)
 
     (0...16).each do |i|
       (0...16).each do |j|

@@ -2,6 +2,30 @@ module Pico
   SCREEN_WIDTH = 128
   SCREEN_HEIGHT = 128
 
+  COLORS = [
+    Raylib::Color.init(0, 0, 0, 255), # black
+    Raylib::Color.init(29, 43, 83, 255), # dark-blue
+    Raylib::Color.init(126, 37, 83, 255), # dark-purple
+    Raylib::Color.init(0, 135, 81, 255), # dark-green
+    Raylib::Color.init(171, 82, 54, 255), # brown
+    Raylib::Color.init(95, 87, 79, 255), # dark-gray
+    Raylib::Color.init(194, 195, 199, 255), # light-gray
+    Raylib::Color.init(255, 241, 232, 255), # white
+    Raylib::Color.init(255, 0, 77, 255), # red
+    Raylib::Color.init(255, 163, 0, 255), # orange
+    Raylib::Color.init(255, 236, 39, 255), # yellow
+    Raylib::Color.init(0, 228, 54, 255), # green
+    Raylib::Color.init(41, 173, 255, 255), # blue
+    Raylib::Color.init(131, 118, 156, 255), # indigo
+    Raylib::Color.init(255, 119, 168, 255), # pink
+    Raylib::Color.init(255, 204, 170, 255)  # peach
+  ]
+
+  def cls(col = 0)
+    Raylib::clear_background(COLORS[col])
+  end
+  module_function :cls
+
   def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
