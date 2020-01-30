@@ -4,7 +4,7 @@ include Pico
 
 class Scene
   def initialize
-    @x = 0
+    @x = 1
   end
 
   def update
@@ -12,7 +12,7 @@ class Scene
     @x = -80 if @x > 150
   end
 
-	def draw
+  def draw
 		cls(1)
 
     (0...16).each do |i|
@@ -23,7 +23,7 @@ class Scene
       end
     end
 
-    Raylib::draw_text("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 10, Raylib::Color.init(255, 163, 0, 255))
+    print("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 7)
   end
 end
 

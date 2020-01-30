@@ -31,6 +31,11 @@ module Pico
   end
   module_function :rectfill
 
+  def print(str, x, y, col = 0)
+    Raylib::draw_text(str, x, y, 1, COLORS[col])
+  end
+  module_function :print
+
   def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
