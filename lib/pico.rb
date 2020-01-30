@@ -26,6 +26,11 @@ module Pico
   end
   module_function :cls
 
+  def rectfill(x0, y0, x1, y1, col = 0)
+    Raylib::draw_rectangle(x0, y0, x1, y1, COLORS[col])
+  end
+  module_function :rectfill
+
   def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)

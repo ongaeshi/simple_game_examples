@@ -8,17 +8,17 @@ class Scene
   end
 
   def update
-    @x += 2
+    @x += 1
     @x = -80 if @x > 150
   end
 
 	def draw
-		cls(0)
+		cls(1)
 
     (0...16).each do |i|
       (0...16).each do |j|
-        if i % 2 == 0 || j % 2 == 0
-          Raylib::draw_rectangle(i * 8, j * 8, 8, 8, Raylib::Color.init(29, 43, 83, 255))
+        if (i % 2) + (j % 2) == 1
+          rectfill(i * 8, j * 8, 8, 8, 3)
         end
       end
     end
