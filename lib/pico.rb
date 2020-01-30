@@ -2,22 +2,20 @@ module Pico
   SCREEN_WIDTH = 128
   SCREEN_HEIGHT = 128
 
-  def mainloop(title, scale = 3)
+  def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
 
       target = Raylib::load_render_texture(SCREEN_WIDTH, SCREEN_HEIGHT)
 
-      init()
-
       until Raylib::window_should_close
         # Update
-        update()
+        scene.update()
 
         # Draw
         Raylib::draw do
           Raylib::texture_mode(target) do
-            draw()
+            scene.draw()
           end
 
           Raylib::draw_texture_pro(
