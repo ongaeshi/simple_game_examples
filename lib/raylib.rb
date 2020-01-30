@@ -6,7 +6,6 @@ module Raylib
     draw_sphere(Vector3.init(0, 0, 0), 0, WHITE)
     clear_background_org(color)
   end
-  module_function :clear_background
 
   class Vector2
     def self.init(x, y)
