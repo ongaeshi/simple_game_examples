@@ -6,6 +6,7 @@ module Raylib
     draw_sphere(Vector3.init(0, 0, 0), 0, WHITE)
     clear_background_org(color)
   end
+  module_function :clear_background
 
   class Vector2
     def self.init(x, y)
@@ -378,28 +379,33 @@ module Raylib
     yield
     close_window
   end
+  module_function :window
 
   def draw
     begin_drawing
     yield
     end_drawing
   end
+  module_function :draw
 
   def mode3d(camera)
     begin_mode3d(camera)
     yield
     end_mode3d
   end
+  module_function :mode3d
 
   def mode2d(camera)
     begin_mode2d(camera)
     yield
     end_mode2d
   end
+  module_function :mode2d
 
   def texture_mode(target)
     begin_texture_mode(target)
     yield
     end_texture_mode
   end
+  module_function :texture_mode
 end
