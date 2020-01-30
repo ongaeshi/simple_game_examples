@@ -339,6 +339,7 @@ module Raylib
   KEY_P = 80
   KEY_R = 82
   KEY_S = 83
+  KEY_X = 88
   KEY_Z = 90
 
   KEY_RIGHT = 262

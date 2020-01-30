@@ -32,6 +32,9 @@ class Scene
     end
 
     print("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 7)
+
+    a = (0..5).select { |e| btn(e) }
+    print(a.to_s, 0, 88, 7)
   end
 end
 

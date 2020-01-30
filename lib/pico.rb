@@ -37,7 +37,7 @@ module Pico
   module_function :rectfill
 
   def print(str, x, y, col = 0)
-    Raylib::draw_text(str, x, y, 1, COLORS[col])
+    Raylib::draw_text(str, x, y, 8, COLORS[col])
   end
 
   module_function :print
@@ -52,8 +52,23 @@ module Pico
       Raylib::WHITE
     )
   end
-
   module_function :spr
+
+  BTN_KEY = [
+    Raylib::KEY_LEFT,
+    Raylib::KEY_RIGHT,
+    Raylib::KEY_UP,
+    Raylib::KEY_DOWN,
+    Raylib::KEY_Z,
+    Raylib::KEY_X,
+  ]
+
+  def btn(i = 0, p = 0)
+    return false if i >= BTN_KEY.length
+    Raylib::is_key_down(BTN_KEY[i])
+    # Raylib::is_gamepad_button_down(p, i)
+  end
+  module_function :btn
 
   def mainloop(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
