@@ -26,6 +26,8 @@ module Pico
 
   def cls(col = 0)
     Raylib::clear_background(COLORS[col])
+    # slower patch: https://github.com/raysan5/raylib/issues/922
+    Raylib::draw_sphere(Raylib::Vector3.init(0, 0, 0), 0, Raylib::WHITE)
   end
 
   module_function :cls
@@ -52,6 +54,7 @@ module Pico
       Raylib::WHITE
     )
   end
+
   module_function :spr
 
   BTN_KEY = [
@@ -68,6 +71,7 @@ module Pico
     Raylib::is_key_down(BTN_KEY[i])
     # Raylib::is_gamepad_button_down(p, i)
   end
+
   module_function :btn
 
   def mainloop(scene, title, scale = 3)
