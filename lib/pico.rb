@@ -74,7 +74,7 @@ module Pico
 
   module_function :btn
 
-  def mainloop(scene, title, scale = 3)
+  def run(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
 
@@ -113,4 +113,6 @@ module Pico
       end
     end
   end
+
+  module_function :run
 end

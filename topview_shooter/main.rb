@@ -38,4 +38,4 @@ class Scene
   end
 end
 
-Pico::mainloop(Scene.new, "topview_shooter")
+run(Scene.new, "topview_shooter")
