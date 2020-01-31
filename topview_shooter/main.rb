@@ -31,6 +31,8 @@ class Scene
       end
     end
 
+    circfill(64, 64, 4, 8)
+
     print("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 7)
 
     a = (0..5).select { |e| btn(e) }

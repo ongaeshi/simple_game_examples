@@ -74,6 +74,12 @@ module Pico
 
   module_function :btn
 
+  def circfill(x, y, r = 4, col = 0)
+    Raylib::draw_circle(x, y, r, COLORS[col])
+  end
+
+  module_function :circfill
+
   def run(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)
