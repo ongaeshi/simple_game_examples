@@ -80,6 +80,30 @@ module Pico
 
   module_function :circfill
 
+  def rnd(max = 1.0)
+    Math::rand * max
+  end
+
+  module_function :rnd
+
+  def sqrt(num)
+    Math.sqrt(num)
+  end
+
+  module_function :sqrt
+
+  def abs(num)
+    num.abs
+  end
+
+  module_function :abs
+
+  def flr(num)
+    num.floor
+  end
+
+  module_function :flr
+
   def run(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)

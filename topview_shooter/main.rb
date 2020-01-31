@@ -34,9 +34,14 @@ class Scene
     circfill(64, 64, 4, 8)
 
     print("Hello, World!", @x, SCREEN_HEIGHT * 0.5 - 5, 7)
+    print("rnd(2) #{rnd(2)}", 0, 72, 7)
+    print("sqrt(3) #{sqrt(3)}", 0, 80, 7)
+    print("abs(-10) #{abs(-10)}", 0, 88, 7)
+    print("flr(5.9) #{flr(5.9)} flr(-5.2) #{flr(-5.2)}", 0, 96, 7)
 
+    p Math::rand(1.5)
     a = (0..5).select { |e| btn(e) }
-    print(a.to_s, 0, 88, 7)
+    print(a.to_s, 0, 112, 7)
   end
 end
 
