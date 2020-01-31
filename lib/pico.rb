@@ -104,6 +104,12 @@ module Pico
 
   module_function :flr
 
+  def line(x0, y0, x1, y1, col = 7)
+    Raylib::draw_line(x0, y0, x1, y1, COLORS[col]);
+  end
+
+  module_function :line
+
   def run(scene, title, scale = 3)
     Raylib::window(SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale, title) do
       Raylib::set_target_fps(30)

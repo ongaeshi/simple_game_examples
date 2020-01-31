@@ -39,9 +39,17 @@ class Scene
     print("abs(-10) #{abs(-10)}", 0, 88, 7)
     print("flr(5.9) #{flr(5.9)} flr(-5.2) #{flr(-5.2)}", 0, 96, 7)
 
-    p Math::rand(1.5)
     a = (0..5).select { |e| btn(e) }
     print(a.to_s, 0, 112, 7)
+
+    line(63, 0, 126, 63, 8)
+    line(126, 63, 63, 126, 8)
+    line(63, 126, 0, 63, 8)
+    line(0, 63, 63, 0, 8)
+
+    (1..8).each do |x|
+      line(rnd(128), rnd(128), rnd(128), rnd(128), 7)
+    end
   end
 end
 
