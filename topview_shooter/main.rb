@@ -12,8 +12,11 @@ beam_life = 64
 
 @@t = 0
 @@pc = nil
+@@npcs = []
 
 class Character
+  attr_reader :x, :y
+  
   def initialize(x, y, s0)
     @x = x
     @y = y
@@ -27,8 +30,6 @@ class Character
   end
 
   def update
-    input
-
     # sprite
     @s = (@d - 1) + @s0
     if @walking
@@ -41,10 +42,32 @@ class Character
     if @walking
       nx = @x + @dx * @spd
       ny = @y + @dy * @spd
-      if self == @@pc # or not collide_with_other_npcs(c, nx, ny, 6)
+      if self == @@pc or true # or not collide_with_other_npcs(c, nx, ny, 6)
         @x = nx
         @y = ny
       end
+    end
+  end
+
+  def draw
+    spr(@s, @x - 4, @y - 4)
+  end
+end
+
+class Player < Character
+  def initialize
+    super(64, 64, 1)
+    @gun = false
+    @gun_interval = 0
+  end
+
+  def update
+    input
+
+    super()
+
+    if @gun_interval > 0
+      @gun_interval -= 1
     end
   end
 
@@ -96,25 +119,30 @@ class Character
       @gun_interval = max_gun_interval
     end
   end
-
-  def draw
-    spr(@s, @x - 4, @y - 4)
-  end
 end
 
-class Player < Character
-  def initialize
-    super(64, 64, 1)
-    @gun = false
-    @gun_interval = 0
+class Npc < Character
+  def initialize(x, y)
+    super(x, y, 64)
   end
 
   def update
-    super()
+    super
+    follow_pc
+  end
 
-    if @gun_interval > 0
-      @gun_interval -= 1
-    end
+  def follow_pc
+    @walking = true
+    @spd = 0.7
+    dx = @@pc.x - @x
+    dy = @@pc.y - @y
+    dist = distance(@@pc.x, @@pc.y, @x, @y)
+    @dx = dx / dist
+    @dy = dy / dist
+  end
+
+  def distance(x1, y1, x2, y2)
+    sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
   end
 end
 
@@ -124,6 +152,14 @@ class Scene
 
     @@pc = Player.new
     @objs << @@pc
+
+    (1..2).each do |y|
+      (1..7).each do |x|
+        npc = Npc.new(x * 16, y * 16)
+        @objs << npc
+        @@npcs << npc
+      end
+    end
   end
 
   def update
