@@ -140,6 +140,7 @@ end
 class Npc < Character
   def initialize(x, y)
     super(x, y, 64)
+    @@npcs << self
   end
 
   def update
@@ -250,8 +251,7 @@ class Scene
 
     (1..2).each do |y|
       (1..7).each do |x|
-        npc = Npc.new(x * 16, y * 16)
-        @@npcs << npc
+        Npc.new(x * 16, y * 16)
       end
     end
   end
