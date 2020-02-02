@@ -21,12 +21,9 @@ def distance(x1, y1, x2, y2)
 end
 
 def collide_with_other_npcs(c, x, y, r)
-  @@npcs.each do |other|
-    if c != other && collision(x, y, other.x, other.y, r)
-      return true
-    end
+  @@npcs.any? do |other|
+    c != other && collision(x, y, other.x, other.y, r)
   end
-  false
 end
 
 def collision(x1, y1, x2, y2, r)
@@ -34,10 +31,7 @@ def collision(x1, y1, x2, y2, r)
 end
 
 def hit_npc(x, y, r)
-  @@npcs.each do |c|
-    return c if collision(x, y, c.x, c.y, r)
-  end
-  return nil
+  @@npcs.find { |c| collision(x, y, c.x, c.y, r) }
 end
 
 class Character
@@ -58,12 +52,8 @@ class Character
   def update
     # sprite
     @s = (@d - 1) + @s0
-    if @walking
-      @s += flr((@@t % (NF * IPF)) / IPF + 1) * 16
-    end
-    if self == @@pc and @gun
-      @s += 4
-    end
+    @s += flr((@@t % (NF * IPF)) / IPF + 1) * 16 if @walking
+    @s += 4 if self == @@pc && @gun
     # position
     if @walking
       nx = @x + @dx * @spd
@@ -170,11 +160,11 @@ class Npc < Character
 
   def face_pc
     if abs(@dx) > abs(@dy)
-      if @dx < 0 then @d = 1 end
-      if @dx > 0 then @d = 2 end
+      @d = 1 if @dx < 0
+      @d = 2 if @dx > 0
     else
-      if @dy < 0 then @d = 3 end
-      if @dy > 0 then @d = 4 end
+      @d = 3 if @dy < 0
+      @d = 4 if @dy > 0
     end
   end
 end
@@ -200,7 +190,7 @@ class Beam
       if c != nil
         @@npcs.delete(c)
         @@beams.delete(self)
-        # sfx(0)
+        # sfx(0)  # TODO:
         num_ptcls = rnd() * 10 + 5
         (0...num_ptcls).each do |e|
           Particle.new(@x, @y, @dx, @dy)
