@@ -14,9 +14,26 @@ beam_life = 64
 @@pc = nil
 @@npcs = []
 
+def distance(x1, y1, x2, y2)
+  sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+end
+
+def collide_with_other_npcs(c, x, y, r)
+  @@npcs.each do |other|
+    if c != other && collision(x, y, other.x, other.y, r)
+      return true
+    end
+  end
+  false
+end
+
+def collision(x1, y1, x2, y2, r)
+  distance(x1, y1, x2, y2) < r
+end
+
 class Character
   attr_reader :x, :y
-  
+
   def initialize(x, y, s0)
     @x = x
     @y = y
@@ -42,7 +59,7 @@ class Character
     if @walking
       nx = @x + @dx * @spd
       ny = @y + @dy * @spd
-      if self == @@pc or true # or not collide_with_other_npcs(c, nx, ny, 6)
+      if self == @@pc || !collide_with_other_npcs(self, nx, ny, 6)
         @x = nx
         @y = ny
       end
@@ -129,6 +146,7 @@ class Npc < Character
   def update
     super
     follow_pc
+    face_pc
   end
 
   def follow_pc
@@ -141,8 +159,14 @@ class Npc < Character
     @dy = dy / dist
   end
 
-  def distance(x1, y1, x2, y2)
-    sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+  def face_pc
+    if abs(@dx) > abs(@dy)
+      if @dx < 0 then @d = 1 end
+      if @dx > 0 then @d = 2 end
+    else
+      if @dy < 0 then @d = 3 end
+      if @dy > 0 then @d = 4 end
+    end
   end
 end
 
