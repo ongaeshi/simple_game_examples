@@ -14,6 +14,7 @@ BEAM_LIFE = 64
 @@pc = nil
 @@beams = []
 @@npcs = []
+@@ptcls = []
 
 def distance(x1, y1, x2, y2)
   sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
@@ -195,21 +196,53 @@ class Beam
     if @life <= 0 or @x < 0 or @x > 127 or @y < 0 or @y > 127
       @@beams.delete(self)
     else
-       c = hit_npc(@x, @y, 3)
-       if c != nil then
+      c = hit_npc(@x, @y, 3)
+      if c != nil
         @@npcs.delete(c)
         @@beams.delete(self)
         # sfx(0)
-        num_ptcls=rnd()*10+5
+        num_ptcls = rnd() * 10 + 5
         (0...num_ptcls).each do |e|
-         # add_ptcl(@x, @y, @dx, @dy)
+          Particle.new(@x, @y, @dx, @dy)
         end
-       end
+      end
     end
   end
 
   def draw
     line(@x + @dx * BEAM_LEN, @y + @dy * BEAM_LEN, @x, @y, 8)
+  end
+end
+
+class Particle
+  def initialize(x, y, dx, dy)
+    @x = x
+    @y = y
+    @r = rnd() * 2
+    @vx = rnd() * 2 - 1 + dx
+    @vy = rnd() * 2 - 1 + dy
+    @life = rnd() * 8 + 8
+    @col = 9
+    if rnd() > 0.6
+      @col = flr(rnd() * 3 + 8)
+      if @col == 9
+        @col = 7
+      end
+    end
+    @@ptcls << self
+  end
+
+  def update
+    @x += @vx
+    @y += @vy
+    @life -= 1
+    if @life < 1
+      @@ptcls.delete(self)
+    end
+  end
+
+  def draw
+    circfill(@x, @y, @r, @col)
   end
 end
 
@@ -229,12 +262,12 @@ class Scene
 
   def update
     @@t += 1
-    ([@@pc] + @@npcs + @@beams).each { |e| e.update }
+    ([@@pc] + @@npcs + @@beams + @@ptcls).each { |e| e.update }
   end
 
   def draw
     cls(13) # rectfill(0,0,127,127,13)
-    ([@@pc] + @@npcs + @@beams).each { |e| e.draw }
+    ([@@pc] + @@npcs + @@beams + @@ptcls).each { |e| e.draw }
   end
 end
 
