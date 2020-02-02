@@ -72,6 +72,8 @@ module Pico
     Raylib::is_key_down(BTN_KEY[i]) ||
     game_pad_key_down(i, p)
   end
+  
+  module_function :btn
 
   def game_pad_key_down(i, p)
     ANALOG_THRESHOLD = 0.5
@@ -92,7 +94,12 @@ module Pico
     end
   end
 
-  module_function :btn
+  def pausebtn(p = 0)
+    Raylib::is_key_down(Raylib::KEY_ENTER) ||
+    Raylib::is_key_down(Raylib::KEY_ESCAPE) ||
+    Raylib::is_gamepad_button_down(0, 10)
+  end
+
 
   def circfill(x, y, r = 4, col = 0)
     Raylib::draw_circle(x, y, r, COLORS[col])

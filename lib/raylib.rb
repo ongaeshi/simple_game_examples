@@ -335,6 +335,8 @@ module Raylib
   RAYWHITE = Color.init(245, 245, 245, 255)  # Ray White
 
   KEY_SPACE = 32
+  KEY_ESCAPE = 256
+  KEY_ENTER = 257
   KEY_A = 65
   KEY_P = 80
   KEY_R = 82
@@ -379,6 +381,7 @@ module Raylib
     yield
     close_window
   end
+
   module_function :window
 
   def draw
@@ -386,6 +389,7 @@ module Raylib
     yield
     end_drawing
   end
+
   module_function :draw
 
   def mode3d(camera)
@@ -393,6 +397,7 @@ module Raylib
     yield
     end_mode3d
   end
+
   module_function :mode3d
 
   def mode2d(camera)
@@ -400,6 +405,7 @@ module Raylib
     yield
     end_mode2d
   end
+
   module_function :mode2d
 
   def texture_mode(target)
@@ -407,5 +413,6 @@ module Raylib
     yield
     end_texture_mode
   end
+
   module_function :texture_mode
 end
