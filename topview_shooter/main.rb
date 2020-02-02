@@ -238,9 +238,15 @@ end
 
 class Scene
   def initialize
-    @objs = []
+    reset
+  end
 
+  def reset
+    @@t = 0
     @@pc = Player.new
+    @@beams = []
+    @@npcs = []
+    @@ptcls = []
 
     (1..2).each do |y|
       (1..7).each do |x|
@@ -251,6 +257,7 @@ class Scene
   end
 
   def update
+    reset if pausebtn
     @@t += 1
     ([@@pc] + @@npcs + @@beams + @@ptcls).each { |e| e.update }
   end
