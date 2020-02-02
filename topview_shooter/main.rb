@@ -4,14 +4,15 @@ include Pico
 
 IPF = 8  # interval per frame
 NF = 2   # number of frames
-max_gun_interval = 8
+MAX_GUN_INTERVAL = 8
 
-beam_spd = 4
-beam_len = 4
-beam_life = 64
+BEAM_SPD = 4
+BEAM_LEN = 4
+BEAM_LIFE = 64
 
 @@t = 0
 @@pc = nil
+@@beams = []
 @@npcs = []
 
 def distance(x1, y1, x2, y2)
@@ -29,6 +30,13 @@ end
 
 def collision(x1, y1, x2, y2, r)
   distance(x1, y1, x2, y2) < r
+end
+
+def hit_npc(x, y, r)
+  @@npcs.each do |c|
+    return c if collision(x, y, c.x, c.y, r)
+  end
+  return nil
 end
 
 class Character
@@ -132,8 +140,8 @@ class Player < Character
       else
         bx -= 3
       end
-      add_beam(bx, by, @dx, @dy)
-      @gun_interval = max_gun_interval
+      Beam.new(bx, by, @dx, @dy)
+      @gun_interval = MAX_GUN_INTERVAL
     end
   end
 end
@@ -170,17 +178,50 @@ class Npc < Character
   end
 end
 
+class Beam
+  def initialize(x, y, dx, dy)
+    @x = x
+    @y = y
+    @dx = dx
+    @dy = dy
+    @life = BEAM_LIFE
+    @@beams << self
+  end
+
+  def update
+    @x += @dx * BEAM_SPD
+    @y += @dy * BEAM_SPD
+    @life -= 1
+    if @life <= 0 or @x < 0 or @x > 127 or @y < 0 or @y > 127
+      @@beams.delete(self)
+    else
+       c = hit_npc(@x, @y, 3)
+       if c != nil then
+        @@npcs.delete(c)
+        @@beams.delete(self)
+        # sfx(0)
+        num_ptcls=rnd()*10+5
+        (0...num_ptcls).each do |e|
+         # add_ptcl(@x, @y, @dx, @dy)
+        end
+       end
+    end
+  end
+
+  def draw
+    line(@x + @dx * BEAM_LEN, @y + @dy * BEAM_LEN, @x, @y, 8)
+  end
+end
+
 class Scene
   def initialize
     @objs = []
 
     @@pc = Player.new
-    @objs << @@pc
 
     (1..2).each do |y|
       (1..7).each do |x|
         npc = Npc.new(x * 16, y * 16)
-        @objs << npc
         @@npcs << npc
       end
     end
@@ -188,12 +229,12 @@ class Scene
 
   def update
     @@t += 1
-    @objs.each { |e| e.update }
+    ([@@pc] + @@npcs + @@beams).each { |e| e.update }
   end
 
   def draw
     cls(13) # rectfill(0,0,127,127,13)
-    @objs.each { |e| e.draw }
+    ([@@pc] + @@npcs + @@beams).each { |e| e.draw }
   end
 end
 
