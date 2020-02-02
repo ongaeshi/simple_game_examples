@@ -68,8 +68,28 @@ module Pico
 
   def btn(i = 0, p = 0)
     return false if i >= BTN_KEY.length
-    Raylib::is_key_down(BTN_KEY[i])
-    # Raylib::is_gamepad_button_down(p, i)
+
+    Raylib::is_key_down(BTN_KEY[i]) ||
+    game_pad_key_down(i, p)
+  end
+
+  def game_pad_key_down(i, p)
+    ANALOG_THRESHOLD = 0.5
+
+    case i
+    when 0
+      Raylib::get_gamepad_axis_movement(0, 1) < -ANALOG_THRESHOLD
+    when 1
+      Raylib::get_gamepad_axis_movement(0, 1) > ANALOG_THRESHOLD
+    when 2
+      Raylib::get_gamepad_axis_movement(0, 2) < -ANALOG_THRESHOLD
+    when 3
+      Raylib::get_gamepad_axis_movement(0, 2) > ANALOG_THRESHOLD
+    when 4
+      Raylib::is_gamepad_button_down(0, 17)
+    when 5
+      Raylib::is_gamepad_button_down(0, 16)
+    end
   end
 
   module_function :btn
